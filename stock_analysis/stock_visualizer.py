@@ -46,7 +46,8 @@ class Visualizer:
             # error triggers if at least one isn't a numpy array-like structure
             try:
                 if not x and not y:
-                    raise ValueError("You must provide an `x` or a `y` at a minimum.")
+                    raise ValueError(
+                        "You must provide an `x` or a `y` at a minimum.")
                 elif x and not y:
                     # vertical line
                     ax.axvline(x, **kwargs)
@@ -55,8 +56,7 @@ class Visualizer:
                     ax.axhline(y, **kwargs)
             except:
                 raise ValueError(
-                    "If providing only `x` or `y`, it must be a single value."
-                )
+                    "If providing only `x` or `y`, it must be a single value.")
         ax.legend()
         return ax
 
@@ -78,7 +78,8 @@ class Visualizer:
             The matplotlib `Axes` object passed in.
         """
         if not x and not y:
-            raise ValueError("You must provide an x or a y min/max tuple at a minimum.")
+            raise ValueError(
+                "You must provide an x or a y min/max tuple at a minimum.")
         elif x and y:
             raise ValueError("You can only provide `x` or `y`.")
         elif x and not y:
@@ -222,7 +223,11 @@ class StockVisualizer(Visualizer):
         """
         return self.data.plot.hist(y=column, **kwargs)
 
-    def candlestick(self, date_range=None, resample=None, volume=False, **kwargs):
+    def candlestick(self,
+                    date_range=None,
+                    resample=None,
+                    volume=False,
+                    **kwargs):
         """
         Create a candlestick plot for the OHLC data with optional aggregation,
         subset of the date range, and volume.
@@ -248,9 +253,10 @@ class StockVisualizer(Visualizer):
                 "low": "min",
                 "volume": "sum",
             }
-            plot_data = plot_data.resample(resample).agg(
-                {col: agg_dict[col] for col in plot_data.columns if col in agg_dict}
-            )
+            plot_data = plot_data.resample(resample).agg({
+                col: agg_dict[col]
+                for col in plot_data.columns if col in agg_dict
+            })
 
         mpf.plot(plot_data, type="candle", volume=volume, **kwargs)
 
@@ -267,7 +273,8 @@ class StockVisualizer(Visualizer):
         fig, axes = plt.subplots(1, 2, figsize=(15, 3))
 
         after_hours.plot(
-            ax=axes[0], title="After-hours trading\n(Open Price - Prior Day's Close)"
+            ax=axes[0],
+            title="After-hours trading\n(Open Price - Prior Day's Close)"
         ).set_ylabel("price")
 
         monthly_effect.index = monthly_effect.index.strftime("%Y-%b")
@@ -282,7 +289,8 @@ class StockVisualizer(Visualizer):
         return axes
 
     @staticmethod
-    def fill_between(y1, y2, title, label_higher, label_lower, figsize, legend_x):
+    def fill_between(y1, y2, title, label_higher, label_lower, figsize,
+                     legend_x):
         """
         Visualize the difference between assets.
 
@@ -302,8 +310,8 @@ class StockVisualizer(Visualizer):
         fig = plt.figure(figsize=figsize)
 
         for exclude_mask, color, label in zip(
-            (is_higher, np.invert(is_higher)), ("g", "r"), (label_higher, label_lower)
-        ):
+            (is_higher, np.invert(is_higher)), ("g", "r"),
+                (label_higher, label_lower)):
             plt.fill_between(
                 y2.index,
                 y2,
@@ -386,7 +394,9 @@ class StockVisualizer(Visualizer):
         """
         ax = self.data.plot(y=column, **kwargs)
         for period in self._iter_handler(periods):
-            self.data[column].pipe(func, **{named_arg: period}).mean().plot(
+            self.data[column].pipe(func, **{
+                named_arg: period
+            }).mean().plot(
                 ax=ax,
                 linestyle="--",
                 label=f'{period if isinstance(period, str) else str(period) + "D"} {name}',
@@ -563,7 +573,9 @@ class AssetGroupVisualizer(Visualizer):
             subset = self.data.query(f'{self.group_by} == "{asset_name}"')
             ax = subset.plot(y=column, ax=ax, label=asset_name, **kwargs)
             for period in self._iter_handler(periods):
-                subset[column].pipe(func, **{named_arg: period}).mean().plot(
+                subset[column].pipe(func, **{
+                    named_arg: period
+                }).mean().plot(
                     ax=ax,
                     linestyle="--",
                     label=f'{period if isinstance(period, str) else str(period) + "D"} {name}',
@@ -580,7 +592,9 @@ class AssetGroupVisualizer(Visualizer):
             A matplotlib `Axes` object.
         """
         num_categories = self.data[self.group_by].nunique()
-        fig, axes = plt.subplots(num_categories, 2, figsize=(15, 3 * num_categories))
+        fig, axes = plt.subplots(num_categories,
+                                 2,
+                                 figsize=(15, 3 * num_categories))
 
         for ax, (name, data) in zip(axes, self.data.groupby(self.group_by)):
             after_hours = data.open - data.close.shift()
@@ -588,8 +602,9 @@ class AssetGroupVisualizer(Visualizer):
             monthly_effect = after_hours.resample("1M").sum()
 
             after_hours.plot(
-                ax=ax[0], title=f"{name} Open Price - Prior Day's Close"
-            ).set_ylabel("price")
+                ax=ax[0],
+                title=f"{name} Open Price - Prior Day's Close").set_ylabel(
+                    "price")
 
             monthly_effect.index = monthly_effect.index.strftime("%Y-%b")
             monthly_effect.plot(
@@ -614,9 +629,9 @@ class AssetGroupVisualizer(Visualizer):
             A seaborn pairplot
         """
         return sns.pairplot(
-            self.data.pivot_table(
-                values="close", index=self.data.index, columns=self.group_by
-            ),
+            self.data.pivot_table(values="close",
+                                  index=self.data.index,
+                                  columns=self.group_by),
             diag_kind="kde",
             **kwargs,
         )
@@ -634,11 +649,14 @@ class AssetGroupVisualizer(Visualizer):
         Returns:
             A seaborn heatmap
         """
-        pivot = self.data.pivot_table(
-            values="close", index=self.data.index, columns=self.group_by
-        )
+        pivot = self.data.pivot_table(values="close",
+                                      index=self.data.index,
+                                      columns=self.group_by)
         if pct_change:
             pivot = pivot.pct_change()
-        return sns.heatmap(
-            pivot.corr(), annot=True, center=0, vmin=-1, vmax=1, **kwargs
-        )
+        return sns.heatmap(pivot.corr(),
+                           annot=True,
+                           center=0,
+                           vmin=-1,
+                           vmax=1,
+                           **kwargs)
