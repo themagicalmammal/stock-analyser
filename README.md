@@ -5,7 +5,7 @@ Package for making elements of technical analysis of a stock easier. This packag
 ## Setup
 
 ```shell
-$ pip3 install stock_analysis 
+$ pip3 install stock-analyser 
 ```
 
 ## Usage

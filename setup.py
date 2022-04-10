@@ -13,7 +13,7 @@ DESCRIPTION = "Classes for technical analysis of stocks."
 
 # Setting up
 setup(
-    name="stock_analysis",
+    name="stock-analyser",
     version=VERSION,
     author="Stefanie Molin",
     author_email="d19cyber@gmail.com",
@@ -36,7 +36,7 @@ setup(
         "analysis",
     ],
     classifiers=[
-        "Development Status :: 0.3 - Production/Stable",
+        "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
         "Programming Language :: Python :: 3",
         "Operating System :: Unix",
