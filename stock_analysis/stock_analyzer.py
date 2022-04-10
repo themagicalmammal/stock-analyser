@@ -36,9 +36,7 @@ class StockAnalyzer:
 
     @property
     def pivot_point(self):
-        """
-        Calculate the pivot point for support/resistance calculations
-        """
+        """Calculate the pivot point for support/resistance calculations"""
         return (self.last_close + self.last_high + self.last_low) / 3
 
     @property
@@ -173,9 +171,7 @@ class StockAnalyzer:
         return beta
 
     def cumulative_returns(self):
-        """
-        Calculate the series of cumulative returns for plotting
-        """
+        """Calculate the series of cumulative returns for plotting"""
         return (1 + self.pct_change).cumprod()
 
     @staticmethod
