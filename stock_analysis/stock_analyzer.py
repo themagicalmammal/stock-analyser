@@ -38,17 +38,17 @@ class StockAnalyzer:
     @property
     def last_close(self):
         # Get the value of the last close in the data
-        return self.data.last('1D').close.iat[0]
+        return self.data.last("1D").close.iat[0]
 
     @property
     def last_high(self):
         # Get the value of the last high in the data
-        return self.data.last('1D').high.iat[0]
+        return self.data.last("1D").high.iat[0]
 
     @property
     def last_low(self):
         # Get the value of the last low in the data
-        return self.data.last('1D').low.iat[0]
+        return self.data.last("1D").low.iat[0]
 
     def resistance(self, level=1):
         """
