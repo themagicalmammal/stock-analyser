@@ -171,7 +171,7 @@ class Visualizer:
 
     def after_hours_trades(self):
         """
-        To be implemented by subclasses for showing the effect of 
+        To be implemented by subclasses for showing the effect of
         after-hours trading.
         """
         raise NotImplementedError("To be implemented by subclasses.")
@@ -237,7 +237,7 @@ class StockVisualizer(Visualizer):
             - volume: Whether to show bar plot for volume traded under the candlesticks
             - kwargs: Additional keyword arguments to pass down to `mplfinance.plot()`
 
-        Note: `mplfinance.plot()` doesn't return anything. To save your plot, pass 
+        Note: `mplfinance.plot()` doesn't return anything. To save your plot, pass
         in `savefig=file.png`.
         """
         if not date_range:
