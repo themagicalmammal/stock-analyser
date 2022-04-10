@@ -47,7 +47,7 @@ class Visualizer:
             try:
                 if not x and not y:
                     raise ValueError("You must provide an `x` or a `y` at a minimum.")
-                elif x and not y:
+                if x and not y:
                     # vertical line
                     ax.axvline(x, **kwargs)
                 elif not x and y:
@@ -79,9 +79,9 @@ class Visualizer:
         """
         if not x and not y:
             raise ValueError("You must provide an x or a y min/max tuple at a minimum.")
-        elif x and y:
+        if x and y:
             raise ValueError("You can only provide `x` or `y`.")
-        elif x and not y:
+        if x and not y:
             # vertical span
             ax.axvspan(*x, **kwargs)
         elif not x and y:
