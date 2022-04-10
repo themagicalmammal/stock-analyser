@@ -102,7 +102,7 @@ class StockAnalyzer:
         Returns:
             The standard deviation
         """
-        return self.pct_change[min(periods, self._max_periods) * -1 :].std()
+        return self.pct_change[min(periods, self._max_periods) * -1:].std()
 
     def annualized_volatility(self):
         """Calculate the annualized volatility."""
@@ -228,9 +228,8 @@ class StockAnalyzer:
         Returns:
             The Sharpe ratio, as a float.
         """
-        return (
-            self.cumulative_returns().last("1D").iat[0] - r_f
-        ) / self.cumulative_returns().std()
+        return (self.cumulative_returns().last("1D").iat[0] -
+                r_f) / self.cumulative_returns().std()
 
 
 class AssetGroupAnalyzer:
@@ -244,7 +243,8 @@ class AssetGroupAnalyzer:
         """
         self.data = df
         if group_by not in self.data.columns:
-            raise ValueError(f'`group_by` column "{group_by}" not in dataframe.')
+            raise ValueError(
+                f'`group_by` column "{group_by}" not in dataframe.')
         self.group_by = group_by
         self.analyzers = self._composition_handler()
 
