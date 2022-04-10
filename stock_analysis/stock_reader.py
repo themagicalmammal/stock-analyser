@@ -13,25 +13,27 @@ class StockReader:
     """Class for reading financial data from websites."""
 
     _index_tickers = {
-        'S&P 500': '^GSPC', 'Dow Jones': '^DJI', 'NASDAQ': '^IXIC', # US
-        'S&P/TSX Composite Index': '^GSPTSE', # Canada
-        'IPC Mexico': '^MXX', # Mexico
-        'IBOVESPA': '^BVSP', # Brazil
-        'Euro Stoxx 50': '^STOXX50E', # Europe
-        'FTSE 100': '^FTSE', # UK
-        'CAC 40': '^FCHI', # France
-        'DAX': '^GDAXI', # Germany
-        'IBEX 35': '^IBEX', # Spain
-        'FTSE MIB': 'FTSEMIB.MI', # Italy
-        'OMX Stockholm 30': '^OMX', # Sweden
-        'Swiss Market Index': '^SSMI', # Switzerland
-        'Nikkei': '^N225', # Japan
-        'Hang Seng': '^HSI', # Hong Kong
-        'CSI 300': '000300.SS', # China
-        'S&P BSE SENSEX': '^BSESN', # India
-        'S&P/ASX 200': '^AXJO', # Australia
-        'MOEX Russia Index': '^IMOEX.ME' # Russia
-    } # to add more, consult https://finance.yahoo.com/world-indices/
+        "S&P 500": "^GSPC",
+        "Dow Jones": "^DJI",
+        "NASDAQ": "^IXIC",  # US
+        "S&P/TSX Composite Index": "^GSPTSE",  # Canada
+        "IPC Mexico": "^MXX",  # Mexico
+        "IBOVESPA": "^BVSP",  # Brazil
+        "Euro Stoxx 50": "^STOXX50E",  # Europe
+        "FTSE 100": "^FTSE",  # UK
+        "CAC 40": "^FCHI",  # France
+        "DAX": "^GDAXI",  # Germany
+        "IBEX 35": "^IBEX",  # Spain
+        "FTSE MIB": "FTSEMIB.MI",  # Italy
+        "OMX Stockholm 30": "^OMX",  # Sweden
+        "Swiss Market Index": "^SSMI",  # Switzerland
+        "Nikkei": "^N225",  # Japan
+        "Hang Seng": "^HSI",  # Hong Kong
+        "CSI 300": "000300.SS",  # China
+        "S&P BSE SENSEX": "^BSESN",  # India
+        "S&P/ASX 200": "^AXJO",  # Australia
+        "MOEX Russia Index": "^IMOEX.ME",  # Russia
+    }  # to add more, consult https://finance.yahoo.com/world-indices/
 
     def __init__(self, start, end=None):
         """
@@ -48,13 +50,12 @@ class StockReader:
             A `StockReader` object.
         """
         self.start, self.end = map(
-            lambda x: \
-                x.strftime('%Y%m%d') if isinstance(x, dt.date)\
-                else re.sub(r'\D', '', x),
-            [start, end or dt.date.today()]
+            lambda x: x.strftime("%Y%m%d")
+            if isinstance(x, dt.date) else re.sub(r"\D", "", x),
+            [start, end or dt.date.today()],
         )
         if self.start >= self.end:
-            raise ValueError('`start` must be before `end`')
+            raise ValueError("`start` must be before `end`")
 
     @property
     def available_tickers(self):
@@ -79,7 +80,7 @@ class StockReader:
         try:
             index = index.upper()
         except AttributeError:
-            raise ValueError('`index` must be a string')
+            raise ValueError("`index` must be a string")
         return cls._index_tickers.get(index, None)
 
     @label_sanitizer
@@ -95,7 +96,6 @@ class StockReader:
             A `pandas.DataFrame` object with the stock data.
         """
         return web.get_data_yahoo(ticker, self.start, self.end)
-
 
     def get_index_data(self, index):
         """
@@ -115,25 +115,23 @@ class StockReader:
         """
         if index not in self.available_tickers:
             raise ValueError(
-                'Index not supported. '
-                f"Available tickers are: {', '.join(self.available_tickers)}"
-            )
+                "Index not supported. "
+                f"Available tickers are: {', '.join(self.available_tickers)}")
         return self.get_ticker_data(self.get_index_ticker(index))
-
 
     def get_bitcoin_data(self, currency_code):
         """
         Get bitcoin historical OHLC data for given date range.
 
         Parameter:
-            - currency_code: The currency to collect the bitcoin data 
+            - currency_code: The currency to collect the bitcoin data
                              in, e.g. USD or GBP.
 
         Returns:
             A `pandas.DataFrame` object with the bitcoin data.
         """
-        return self.get_ticker_data(f'BTC-{currency_code}').loc[self.start:self.end]
-
+        return self.get_ticker_data(
+            f"BTC-{currency_code}").loc[self.start:self.end]
 
     def get_risk_free_rate_of_return(self, last=True):
         """
@@ -147,11 +145,11 @@ class StockReader:
         Returns:
             A single value or a `pandas.Series` object with the risk-free rate(s) of return.
         """
-        data = web.DataReader('DGS10', 'fred', start=self.start, end=self.end)
-        data.index.rename('date', inplace=True)
+        data = web.DataReader("DGS10", "fred", start=self.start, end=self.end)
+        data.index.rename("date", inplace=True)
         data = data.squeeze()
-        return data.asof(self.end) if last and isinstance(data, pd.Series) else data
-
+        return data.asof(
+            self.end) if last and isinstance(data, pd.Series) else data
 
     @label_sanitizer
     def get_forex_rates(self, from_currency, to_currency, **kwargs):
@@ -171,8 +169,11 @@ class StockReader:
             A `pandas.DataFrame` with daily exchange rates.
         """
         data = web.DataReader(
-            f'{from_currency}/{to_currency}', 'av-forex-daily',
-            start=self.start, end=self.end, **kwargs
+            f"{from_currency}/{to_currency}",
+            "av-forex-daily",
+            start=self.start,
+            end=self.end,
+            **kwargs,
         ).rename(pd.to_datetime)
-        data.index.rename('date', inplace=True)
+        data.index.rename("date", inplace=True)
         return data
