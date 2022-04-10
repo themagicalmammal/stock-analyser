@@ -38,7 +38,7 @@ sp = reader.get_index_data("S&P 500")
 ### Grouping data
 
 ```python
-from stock_analysis.utils import group_stocks, describe_group
+from stock_analysis import group_stocks, describe_group
 
 faang = group_stocks(
     {"Facebook": fb, "Apple": aapl, "Amazon": amzn, "Netflix": nflx, "Google": goog}
