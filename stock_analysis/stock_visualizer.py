@@ -170,7 +170,10 @@ class Visualizer:
         raise NotImplementedError("To be implemented by subclasses.")
 
     def after_hours_trades(self):
-        """To be implemented by subclasses for showing the effect of after-hours trading."""
+        """
+        To be implemented by subclasses for showing the effect of 
+        after-hours trading.
+        """
         raise NotImplementedError("To be implemented by subclasses.")
 
     def pairplot(self, **kwargs):
@@ -231,10 +234,11 @@ class StockVisualizer(Visualizer):
             - date_range: String or `slice()` of dates to pass to `loc[]`, if `None`
                           the plot will be for the full range of the data.
             - resample: The offset to use for resampling the data, if desired.
-            - volume: Whether to show a bar plot for volume traded under the candlesticks
+            - volume: Whether to show bar plot for volume traded under the candlesticks
             - kwargs: Additional keyword arguments to pass down to `mplfinance.plot()`
 
-        Note: `mplfinance.plot()` doesn't return anything. To save your plot, pass in `savefig=file.png`.
+        Note: `mplfinance.plot()` doesn't return anything. To save your plot, pass 
+        in `savefig=file.png`.
         """
         if not date_range:
             date_range = slice(self.data.index.min(), self.data.index.max())
