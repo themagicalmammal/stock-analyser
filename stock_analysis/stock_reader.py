@@ -82,7 +82,7 @@ class StockReader:
             index = index.upper()
         except AttributeError:
             raise ValueError("`index` must be a string")
-        return cls._index_tickers.get(index, None)
+        return cls._index_tickers.get(index)
 
     @label_sanitizer
     def get_ticker_data(self, ticker):
