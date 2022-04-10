@@ -10,7 +10,7 @@ from .utils import label_sanitizer
 
 
 class StockReader:
-    """ Class for reading financial data from websites """
+    """Class for reading financial data from websites"""
 
     _index_tickers = {
         "S&P 500": "^GSPC",
@@ -60,7 +60,7 @@ class StockReader:
 
     @property
     def available_tickers(self):
-        """ Access the names of the indices whose tickers are supported """
+        """Access the names of the indices whose tickers are supported"""
         return list(self._index_tickers.keys())
 
     @classmethod
@@ -140,12 +140,12 @@ class StockReader:
         Source: FRED (https://fred.stlouisfed.org/series/DGS10)
 
         Parameter:
-            - last: If `True` (default), return the rate on the last date 
-            in the date range else, return a `Series` object for the rate 
+            - last: If `True` (default), return the rate on the last date
+            in the date range else, return a `Series` object for the rate
             each day in the date range
 
         Returns:
-            A single value or a `pandas.Series` object with the risk-free 
+            A single value or a `pandas.Series` object with the risk-free
             rate(s) of return
         """
         data = web.DataReader("DGS10", "fred", start=self.start, end=self.end)
@@ -159,8 +159,8 @@ class StockReader:
         Get daily foreign exchange rates from AlphaVantage
 
         Note: This requires an API key, which can be obtained for free at
-        https://www.alphavantage.co/support/#api-key. To use this method, 
-        you must either store it as an environment variable called 
+        https://www.alphavantage.co/support/#api-key. To use this method,
+        you must either store it as an environment variable called
         `ALPHAVANTAGE_API_KEY` or pass it in to this method as `api_key`
 
         Parameters:

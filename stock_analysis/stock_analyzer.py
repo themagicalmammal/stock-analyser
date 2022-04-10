@@ -6,19 +6,19 @@ from .utils import validate_df
 
 
 class StockAnalyzer:
-    """ Class for providing metrics for technical analysis of a stock """
+    """Class for providing metrics for technical analysis of a stock"""
 
     @validate_df(columns={"open", "high", "low", "close"})
     def __init__(self, df):
-        """ 
+        """
         Create a `StockAnalyzer` object by passing in a
-        `pandas.DataFrame` of OHLC data 
+        `pandas.DataFrame` of OHLC data
         """
         self.data = df
 
     @property
     def _max_periods(self):
-        """ 
+        """
         Get the maximum number of trading periods that can be used
         in calculations
         """
@@ -26,34 +26,34 @@ class StockAnalyzer:
 
     @property
     def close(self):
-        """ Get the close column of the data """
+        """Get the close column of the data"""
         return self.data.close
 
     @property
     def pct_change(self):
-        """ Get the percent change of the close column """
+        """Get the percent change of the close column"""
         return self.close.pct_change()
 
     @property
     def pivot_point(self):
-        """ 
+        """
         Calculate the pivot point for support/resistance calculations
         """
         return (self.last_close + self.last_high + self.last_low) / 3
 
     @property
     def last_close(self):
-        """ Get the value of the last close in the data """
+        """Get the value of the last close in the data"""
         return self.data.last("1D").close.iat[0]
 
     @property
     def last_high(self):
-        """ Get the value of the last high in the data """
+        """Get the value of the last high in the data"""
         return self.data.last("1D").high.iat[0]
 
     @property
     def last_low(self):
-        """ Get the value of the last low in the data """
+        """Get the value of the last low in the data"""
         return self.data.last("1D").low.iat[0]
 
     def resistance(self, level=1):
@@ -113,7 +113,7 @@ class StockAnalyzer:
         return self.pct_change[min(periods, self._max_periods) * -1 :].std()
 
     def annualized_volatility(self):
-        """ Calculate the annualized volatility """
+        """Calculate the annualized volatility"""
         return self.daily_std() * math.sqrt(252)
 
     def volatility(self, periods=252):
@@ -154,7 +154,7 @@ class StockAnalyzer:
         return self.close.std() / self.close.mean()
 
     def qcd(self):
-        """ Calculate the quantile coefficient of dispersion """
+        """Calculate the quantile coefficient of dispersion"""
         q1, q3 = self.close.quantile([0.25, 0.75])
         return (q3 - q1) / (q3 + q1)
 
@@ -243,7 +243,7 @@ class StockAnalyzer:
 
 
 class AssetGroupAnalyzer:
-    """ Analyzes many assets in a dataframe """
+    """Analyzes many assets in a dataframe"""
 
     @validate_df(columns={"open", "high", "low", "close"})
     def __init__(self, df, group_by="name"):

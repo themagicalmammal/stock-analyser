@@ -10,7 +10,7 @@ from .utils import validate_df
 
 
 class StockModeler:
-    """ Static methods for modeling stocks """
+    """Static methods for modeling stocks"""
 
     def __init__(self):
         raise NotImplementedError(
