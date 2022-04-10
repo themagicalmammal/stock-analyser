@@ -53,7 +53,7 @@ describe_group(faang)
 Groups assets by date and sums columns to build a portfolio.
 
 ```python
-from stock_analysis.utils import make_portfolio
+from stock_analysis import make_portfolio
 
 faang_portfolio = make_portfolio(faang)
 ```
