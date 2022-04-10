@@ -13,7 +13,7 @@ DESCRIPTION = "Classes for technical analysis of stocks."
 
 # Setting up
 setup(
-    name="stock-analysis",
+    name="stock_analysis",
     version=VERSION,
     author="Stefanie Molin",
     author_email="d19cyber@gmail.com",
