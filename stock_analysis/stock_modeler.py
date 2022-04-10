@@ -14,7 +14,8 @@ class StockModeler:
 
     def __init__(self):
         raise NotImplementedError(
-            "This class must used statically; don't instantiate it.")
+            "This class must used statically; don't instantiate it."
+        )
 
     @staticmethod
     @validate_df(columns={"close"}, instance_method=False)
@@ -54,18 +55,14 @@ class StockModeler:
         Returns:
             A `statsmodels` ARIMA object which you can use to fit and predict.
         """
-        arima_model = ARIMA(df.close.asfreq(freq).fillna(method="ffill"),
-                            order=(ar, i, ma))
+        arima_model = ARIMA(
+            df.close.asfreq(freq).fillna(method="ffill"), order=(ar, i, ma)
+        )
         return arima_model.fit() if fit else arima_model
 
     @staticmethod
     @validate_df(columns={"close"}, instance_method=False)
-    def arima_predictions(df,
-                          arima_model_fitted,
-                          start,
-                          end,
-                          plot=True,
-                          **kwargs):
+    def arima_predictions(df, arima_model_fitted, start, end, plot=True, **kwargs):
         """
         Get ARIMA predictions as a `pandas.Series` object or plot.
 
@@ -160,8 +157,7 @@ class StockModeler:
             A matplotlib `Axes` object.
         """
         fig, axes = plt.subplots(1, 2, figsize=(15, 5))
-        residuals = pd.Series(model_fitted.resid.asfreq(freq),
-                              name="residuals")
+        residuals = pd.Series(model_fitted.resid.asfreq(freq), name="residuals")
         residuals.plot(style="bo", ax=axes[0], title="Residuals")
         axes[0].set(xlabel="Date", ylabel="Residual")
         residuals.plot(kind="kde", ax=axes[1], title="Residuals KDE")
