@@ -1,4 +1,4 @@
-""" Classes for technical analysis of assets """
+"""Classes for technical analysis of assets"""
 
 import math
 

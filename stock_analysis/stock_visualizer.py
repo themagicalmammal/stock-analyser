@@ -1,4 +1,4 @@
-"""Visualize financial instruments."""
+"""Visualize financial instruments"""
 
 import math
 
@@ -12,31 +12,31 @@ from .utils import validate_df
 
 
 class Visualizer:
-    """Base visualizer class not intended for direct use."""
+    """Base visualizer class not intended for direct use"""
 
     @validate_df(columns={"open", "high", "low", "close"})
     def __init__(self, df):
-        """Visualizer has a `pandas.DataFrame` object as an attribute."""
+        """Visualizer has a `pandas.DataFrame` object as an attribute"""
         self.data = df
 
     @staticmethod
     def add_reference_line(ax, x=None, y=None, **kwargs):
         """
-        Static method for adding reference lines to plots.
+        Static method for adding reference lines to plots
 
         Parameters:
-            - ax: The matplotlib `Axes` object to add the reference line to.
+            - ax: The matplotlib `Axes` object to add the reference line to
             - x, y: The x, y value to draw the line at as a
-                    single value or numpy array-like structure.
+                    single value or numpy array-like structure
                         - For horizontal: pass only `y`
                         - For vertical: pass only `x`
                         - For AB line: pass both `x` and `y`
                         for all coordinates on the line
             - kwargs: Additional keyword arguments to pass to the plotting
-                      function.
+                      function
 
         Returns:
-            The matplotlib `Axes` object passed in.
+            The matplotlib `Axes` object passed in
         """
         try:
             # in case numpy array-like structures are passed -> AB line
@@ -63,19 +63,19 @@ class Visualizer:
     @staticmethod
     def shade_region(ax, x=(), y=(), **kwargs):
         """
-        Static method for shading a region on a plot.
+        Static method for shading a region on a plot
 
         Parameters:
-            - ax: The matplotlib `Axes` object to add the shaded region to.
+            - ax: The matplotlib `Axes` object to add the shaded region to
             - x: Tuple with the `xmin` and `xmax` bounds for the rectangle
-                 drawn vertically.
+                 drawn vertically
             - y: Tuple with the `ymin` and `ymax` bounds for the rectangle
-                 drawn horizontally.
+                 drawn horizontally
             - kwargs: Additional keyword arguments to pass to the plotting
-                      function.
+                      function
 
         Returns:
-            The matplotlib `Axes` object passed in.
+            The matplotlib `Axes` object passed in
         """
         if not x and not y:
             raise ValueError("You must provide an x or a y min/max tuple at a minimum.")
@@ -93,13 +93,13 @@ class Visualizer:
     def _iter_handler(items):
         """
         Static method for making a list out of an item if it isn't a list or
-        tuple already.
+        tuple already
 
         Parameters:
-            - items: The variable to make sure it is a list.
+            - items: The variable to make sure it is a list
 
         Returns:
-            The input as a list or tuple.
+            The input as a list or tuple
         """
         if not isinstance(items, (list, tuple)):
             items = [items]
@@ -107,23 +107,23 @@ class Visualizer:
 
     def _window_calc(self, column, periods, name, func, named_arg, **kwargs):
         """
-        To be implemented by subclasses. Defines how to add lines resulting
-        from window calculations.
+        To be implemented by subclasses
+        Defines how to add lines resulting from window calculations
         """
         raise NotImplementedError("To be implemented by subclasses.")
 
     def moving_average(self, column, periods, **kwargs):
         """
-        Add line(s) for the moving average of a column.
+        Add line(s) for the moving average of a column
 
         Parameters:
-            - column: The name of the column to plot.
+            - column: The name of the column to plot
             - periods: The rule or list of rules for resampling,
-                       like '20D' for 20-day periods.
-            - kwargs: Additional arguments to pass down to the plotting function.
+                       like '20D' for 20-day periods
+            - kwargs: Additional arguments to pass down to the plotting function
 
         Returns:
-            A matplotlib `Axes` object.
+            A matplotlib `Axes` object
         """
         return self._window_calc(
             column,
@@ -136,16 +136,16 @@ class Visualizer:
 
     def exp_smoothing(self, column, periods, **kwargs):
         """
-        Add line(s) for the exponentially smoothed moving average of a column.
+        Add line(s) for the exponentially smoothed moving average of a column
 
         Parameters:
-            - column: The name of the column to plot.
+            - column: The name of the column to plot
             - periods: The span or list of spans for smoothing,
-                       like 20 for 20-day periods.
-            - kwargs: Additional arguments to pass down to the plotting function.
+                       like 20 for 20-day periods
+            - kwargs: Additional arguments to pass down to the plotting function
 
         Returns:
-            A matplotlib `Axes` object.
+            A matplotlib `Axes` object
         """
         return self._window_calc(
             column,
@@ -158,87 +158,87 @@ class Visualizer:
 
     # abstract methods for subclasses to define
     def evolution_over_time(self, column, **kwargs):
-        """To be implemented by subclasses for generating line plots."""
+        """To be implemented by subclasses for generating line plots"""
         raise NotImplementedError("To be implemented by subclasses.")
 
     def boxplot(self, **kwargs):
-        """To be implemented by subclasses for generating box plots."""
+        """To be implemented by subclasses for generating box plots"""
         raise NotImplementedError("To be implemented by subclasses.")
 
     def histogram(self, column, **kwargs):
-        """To be implemented by subclasses for generating histograms."""
+        """To be implemented by subclasses for generating histograms"""
         raise NotImplementedError("To be implemented by subclasses.")
 
     def after_hours_trades(self):
         """
         To be implemented by subclasses for showing the effect of
-        after-hours trading.
+        after-hours trading
         """
         raise NotImplementedError("To be implemented by subclasses.")
 
     def pairplot(self, **kwargs):
-        """To be implemented by subclasses for generating pairplots."""
+        """To be implemented by subclasses for generating pairplots"""
         raise NotImplementedError("To be implemented by subclasses.")
 
 
 class StockVisualizer(Visualizer):
-    """Visualizer for a single stock."""
+    """Visualizer for a single stock"""
 
     def evolution_over_time(self, column, **kwargs):
         """
-        Visualize the evolution over time of a column.
+        Visualize the evolution over time of a column
 
         Parameters:
-            - column: The name of the column to visualize.
+            - column: The name of the column to visualize
             - kwargs: Additional keyword arguments to pass down
-                      to the plotting function.
+                      to the plotting function
 
         Returns:
-            A matplotlib `Axes` object.
+            A matplotlib `Axes` object
         """
         return self.data.plot.line(y=column, **kwargs)
 
     def boxplot(self, **kwargs):
         """
-        Generate box plots for all columns.
+        Generate box plots for all columns
 
         Parameters:
             - kwargs: Additional keyword arguments to pass down
-                      to the plotting function.
+                      to the plotting function
 
         Returns:
-            A matplotlib `Axes` object.
+            A matplotlib `Axes` object
         """
         return self.data.plot(kind="box", **kwargs)
 
     def histogram(self, column, **kwargs):
         """
-        Generate the histogram of a given column.
+        Generate the histogram of a given column
 
         Parameters:
-            - column: The name of the column to visualize.
+            - column: The name of the column to visualize
             - kwargs: Additional keyword arguments to pass down
-                      to the plotting function.
+                      to the plotting function
 
         Returns:
-            A matplotlib `Axes` object.
+            A matplotlib `Axes` object
         """
         return self.data.plot.hist(y=column, **kwargs)
 
     def candlestick(self, date_range=None, resample=None, volume=False, **kwargs):
         """
         Create a candlestick plot for the OHLC data with optional aggregation,
-        subset of the date range, and volume.
+        subset of the date range, and volume
 
         Parameters:
             - date_range: String or `slice()` of dates to pass to `loc[]`, if `None`
-                          the plot will be for the full range of the data.
-            - resample: The offset to use for resampling the data, if desired.
+                          the plot will be for the full range of the data
+            - resample: The offset to use for resampling the data, if desired
             - volume: Whether to show bar plot for volume traded under the candlesticks
             - kwargs: Additional keyword arguments to pass down to `mplfinance.plot()`
 
-        Note: `mplfinance.plot()` doesn't return anything. To save your plot, pass
-        in `savefig=file.png`.
+        Note: `mplfinance.plot()` doesn't return anything
+        To save your plot, pass in `savefig=file.png`
         """
         if not date_range:
             date_range = slice(self.data.index.min(), self.data.index.max())
@@ -260,10 +260,10 @@ class StockVisualizer(Visualizer):
 
     def after_hours_trades(self):
         """
-        Visualize the effect of after-hours trading on this asset.
+        Visualize the effect of after-hours trading on this asset
 
         Returns:
-            A matplotlib `Axes` object.
+            A matplotlib `Axes` object
         """
         after_hours = self.data.open - self.data.close.shift()
 
@@ -288,18 +288,18 @@ class StockVisualizer(Visualizer):
     @staticmethod
     def fill_between(y1, y2, title, label_higher, label_lower, figsize, legend_x):
         """
-        Visualize the difference between assets.
+        Visualize the difference between assets
 
         Parameters:
-            - y1, y2: Data to be plotted with fill between y2 - y1.
-            - title: The title for the plot.
-            - label_higher: String label for when y2 is higher than y1.
-            - label_lower: String label for when y2 is lower than y1.
-            - figsize: A tuple of (width, height) for the plot dimensions.
-            - legend_x: Where to place the legend below the plot.
+            - y1, y2: Data to be plotted with fill between y2 - y1
+            - title: The title for the plot
+            - label_higher: String label for when y2 is higher than y1
+            - label_lower: String label for when y2 is lower than y1
+            - figsize: A tuple of (width, height) for the plot dimensions
+            - legend_x: Where to place the legend below the plot
 
         Returns:
-            A matplotlib `Axes` object.
+            A matplotlib `Axes` object
         """
         is_higher = y2 - y1 > 0
 
@@ -327,13 +327,13 @@ class StockVisualizer(Visualizer):
 
     def open_to_close(self, figsize=(10, 4)):
         """
-        Visualize the daily change in price from open to close.
+        Visualize the daily change in price from open to close
 
         Parameters:
-            - figsize: A tuple of (width, height) for the plot dimensions.
+            - figsize: A tuple of (width, height) for the plot dimensions
 
         Returns:
-            A matplotlib `Axes` object.
+            A matplotlib `Axes` object
         """
         ax = self.fill_between(
             self.data.open,
@@ -349,14 +349,14 @@ class StockVisualizer(Visualizer):
 
     def fill_between_other(self, other_df, figsize=(10, 4)):
         """
-        Visualize the difference in closing price between assets.
+        Visualize the difference in closing price between assets
 
         Parameters:
-            - other_df: The dataframe with the other asset's data.
-            - figsize: A tuple of (width, height) for the plot dimensions.
+            - other_df: The dataframe with the other asset's data
+            - figsize: A tuple of (width, height) for the plot dimensions
 
         Returns:
-            A matplotlib `Axes` object.
+            A matplotlib `Axes` object
         """
         ax = self.fill_between(
             other_df.open,
@@ -373,20 +373,20 @@ class StockVisualizer(Visualizer):
     def _window_calc(self, column, periods, name, func, named_arg, **kwargs):
         """
         Helper method for plotting a series and adding reference lines using
-        a window calculation.
+        a window calculation
 
         Parameters:
-            - column: The name of the column to plot.
+            - column: The name of the column to plot
             - periods: The rule/span or list of them to pass to the
                        resampling/smoothing function, like '20D' for 20-day periods
                        (for resampling) or 20 for a 20-day span (smoothing)
-            - name: The name of the window calculation (to show in the legend).
-            - func: The window calculation function.
-            - named_arg: The name of the argument `periods` is being passed as.
-            - kwargs: Additional arguments to pass down to the plotting function.
+            - name: The name of the window calculation (to show in the legend)
+            - func: The window calculation function
+            - named_arg: The name of the argument `periods` is being passed as
+            - kwargs: Additional arguments to pass down to the plotting function
 
         Returns:
-            A matplotlib `Axes` object.
+            A matplotlib `Axes` object
         """
         ax = self.data.plot(y=column, **kwargs)
         for period in self._iter_handler(periods):
@@ -400,7 +400,7 @@ class StockVisualizer(Visualizer):
 
     def pairplot(self, **kwargs):
         """
-        Generate a seaborn pairplot for this asset.
+        Generate a seaborn pairplot for this asset
 
         Parameters:
             - kwargs: Keyword arguments to pass down to `sns.pairplot()`
@@ -413,11 +413,11 @@ class StockVisualizer(Visualizer):
     def jointplot(self, other, column, **kwargs):
         """
         Generate a seaborn jointplot for given column in asset compared to
-        another asset.
+        another asset
 
         Parameters:
             - other: The other asset's dataframe
-            - column: The column name to use for the comparison.
+            - column: The column name to use for the comparison
             - kwargs: Keyword arguments to pass down to `sns.jointplot()`
 
         Returns:
@@ -428,10 +428,10 @@ class StockVisualizer(Visualizer):
     def correlation_heatmap(self, other):
         """
         Plot the correlations between this asset and
-        another one with a heatmap.
+        another one with a heatmap
 
         Parameters:
-            - other: The other dataframe.
+            - other: The other dataframe
 
         Returns:
             A seaborn heatmap
@@ -460,25 +460,25 @@ class StockVisualizer(Visualizer):
 
 
 class AssetGroupVisualizer(Visualizer):
-    """Class for visualizing groups of assets in a single dataframe."""
+    """Class for visualizing groups of assets in a single dataframe"""
 
     # override for group visuals
     def __init__(self, df, group_by="name"):
-        """This object also keeps track of which column it needs to group by."""
+        """This object also keeps track of which column it needs to group by"""
         super().__init__(df)
         self.group_by = group_by
 
     def evolution_over_time(self, column, **kwargs):
         """
-        Visualize the evolution over time of a column for all assets in group.
+        Visualize the evolution over time of a column for all assets in group
 
         Parameters:
-            - column: The name of the column to visualize.
+            - column: The name of the column to visualize
             - kwargs: Additional keyword arguments to pass down
-                      to the plotting function.
+                      to the plotting function
 
         Returns:
-            A matplotlib `Axes` object.
+            A matplotlib `Axes` object
         """
         if "ax" not in kwargs:
             _, ax = plt.subplots(1, 1, figsize=(10, 4))
@@ -495,24 +495,24 @@ class AssetGroupVisualizer(Visualizer):
 
     def boxplot(self, column, **kwargs):
         """
-        Generate box plots for a given column in all assets.
+        Generate box plots for a given column in all assets
 
         Parameters:
-            - column: The name of the column to visualize.
+            - column: The name of the column to visualize
             - kwargs: Additional keyword arguments to pass down
-                      to the plotting function.
+                      to the plotting function
 
         Returns:
-            A matplotlib `Axes` object.
+            A matplotlib `Axes` object
         """
         return sns.boxplot(x=self.group_by, y=column, data=self.data, **kwargs)
 
     def _get_layout(self):
         """
-        Helper method for getting an autolayout of subplots (1 per group).
+        Helper method for getting an autolayout of subplots (1 per group)
 
         Returns:
-            The matplotlib `Figure` and `Axes` objects to plot with.
+            The matplotlib `Figure` and `Axes` objects to plot with
         """
         subplots_needed = self.data[self.group_by].nunique()
         rows = math.ceil(subplots_needed / 2)
@@ -528,15 +528,15 @@ class AssetGroupVisualizer(Visualizer):
 
     def histogram(self, column, **kwargs):
         """
-        Generate the histogram of a given column for all assets in group.
+        Generate the histogram of a given column for all assets in group
 
         Parameters:
-            - column: The name of the column to visualize.
+            - column: The name of the column to visualize
             - kwargs: Additional keyword arguments to pass down
-                      to the plotting function.
+                      to the plotting function
 
         Returns:
-            A matplotlib `Axes` object.
+            A matplotlib `Axes` object
         """
         _, axes = self._get_layout()
         for ax, (name, data) in zip(axes, self.data.groupby(self.group_by)):
@@ -547,20 +547,20 @@ class AssetGroupVisualizer(Visualizer):
     def _window_calc(self, column, periods, name, func, named_arg, **kwargs):
         """
         Helper method for plotting a series and adding reference lines using
-        a window calculation.
+        a window calculation
 
         Parameters:
-            - column: The name of the column to plot.
+            - column: The name of the column to plot
             - periods: The rule/span or list of them to pass to the
                        resampling/smoothing function, like '20D' for 20-day periods
                        (for resampling) or 20 for a 20-day span (smoothing)
-            - name: The name of the window calculation (to show in the legend).
-            - func: The window calculation function.
-            - named_arg: The name of the argument `periods` is being passed as.
-            - kwargs: Additional arguments to pass down to the plotting function.
+            - name: The name of the window calculation (to show in the legend)
+            - func: The window calculation function
+            - named_arg: The name of the argument `periods` is being passed as
+            - kwargs: Additional arguments to pass down to the plotting function
 
         Returns:
-            A matplotlib `Axes` object.
+            A matplotlib `Axes` object
         """
         _, axes = self._get_layout()
         for ax, asset_name in zip(axes, self.data[self.group_by].unique()):
@@ -578,10 +578,10 @@ class AssetGroupVisualizer(Visualizer):
 
     def after_hours_trades(self):
         """
-        Visualize the effect of after-hours trading on this asset group.
+        Visualize the effect of after-hours trading on this asset group
 
         Returns:
-            A matplotlib `Axes` object.
+            A matplotlib `Axes` object
         """
         num_categories = self.data[self.group_by].nunique()
         _, axes = plt.subplots(num_categories, 2, figsize=(15, 3 * num_categories))
@@ -609,7 +609,7 @@ class AssetGroupVisualizer(Visualizer):
 
     def pairplot(self, **kwargs):
         """
-        Generate a seaborn pairplot for this asset group.
+        Generate a seaborn pairplot for this asset group
 
         Parameters:
             - kwargs: Keyword arguments to pass down to `sns.pairplot()`
@@ -627,12 +627,12 @@ class AssetGroupVisualizer(Visualizer):
 
     def heatmap(self, pct_change=True, **kwargs):
         """
-        Generate a seaborn heatmap for correlations between assets.
+        Generate a seaborn heatmap for correlations between assets
 
         Parameters:
             - pct_change: Whether or not to show the correlations of the
                           daily percent change in price or just use
-                          the closing price.
+                          the closing price
             - kwargs: Keyword arguments to pass down to `sns.heatmap()`
 
         Returns:

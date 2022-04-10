@@ -1,4 +1,4 @@
-""" Simple time series modeling for stocks """
+"""Simple time series modeling for stocks"""
 
 import matplotlib.pyplot as plt
 import pandas as pd
