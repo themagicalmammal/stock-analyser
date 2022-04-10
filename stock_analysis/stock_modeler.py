@@ -156,7 +156,7 @@ class StockModeler:
         Returns:
             A matplotlib `Axes` object.
         """
-        fig, axes = plt.subplots(1, 2, figsize=(15, 5))
+        _, axes = plt.subplots(1, 2, figsize=(15, 5))
         residuals = pd.Series(model_fitted.resid.asfreq(freq), name="residuals")
         residuals.plot(style="bo", ax=axes[0], title="Residuals")
         axes[0].set(xlabel="Date", ylabel="Residual")
