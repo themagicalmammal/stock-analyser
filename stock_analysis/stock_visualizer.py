@@ -264,7 +264,7 @@ class StockVisualizer(Visualizer):
         after_hours = self.data.open - self.data.close.shift()
 
         monthly_effect = after_hours.resample("1M").sum()
-        fig, axes = plt.subplots(1, 2, figsize=(15, 3))
+        _, axes = plt.subplots(1, 2, figsize=(15, 3))
 
         after_hours.plot(
             ax=axes[0], title="After-hours trading\n(Open Price - Prior Day's Close)"
@@ -477,7 +477,7 @@ class AssetGroupVisualizer(Visualizer):
             A matplotlib `Axes` object.
         """
         if "ax" not in kwargs:
-            fig, ax = plt.subplots(1, 1, figsize=(10, 4))
+            _, ax = plt.subplots(1, 1, figsize=(10, 4))
         else:
             ax = kwargs.pop("ax")
         return sns.lineplot(
@@ -534,7 +534,7 @@ class AssetGroupVisualizer(Visualizer):
         Returns:
             A matplotlib `Axes` object.
         """
-        fig, axes = self._get_layout()
+        _, axes = self._get_layout()
         for ax, (name, data) in zip(axes, self.data.groupby(self.group_by)):
             sns.histplot(data[column], kde=True, ax=ax)
             ax.set_title(f"{name} - {column}")
@@ -558,7 +558,7 @@ class AssetGroupVisualizer(Visualizer):
         Returns:
             A matplotlib `Axes` object.
         """
-        fig, axes = self._get_layout()
+        _, axes = self._get_layout()
         for ax, asset_name in zip(axes, self.data[self.group_by].unique()):
             subset = self.data.query(f'{self.group_by} == "{asset_name}"')
             ax = subset.plot(y=column, ax=ax, label=asset_name, **kwargs)
@@ -580,7 +580,7 @@ class AssetGroupVisualizer(Visualizer):
             A matplotlib `Axes` object.
         """
         num_categories = self.data[self.group_by].nunique()
-        fig, axes = plt.subplots(num_categories, 2, figsize=(15, 3 * num_categories))
+        _, axes = plt.subplots(num_categories, 2, figsize=(15, 3 * num_categories))
 
         for ax, (name, data) in zip(axes, self.data.groupby(self.group_by)):
             after_hours = data.open - data.close.shift()
