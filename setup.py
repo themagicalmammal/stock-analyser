@@ -1,14 +1,26 @@
-from distutils.core import setup
+import codecs
+import os
 
+from setuptools import find_packages, setup
+
+here = os.path.abspath(os.path.dirname(__file__))
+
+with codecs.open(os.path.join(here, "README.md"), encoding="utf-8") as fh:
+    long_description = "\n" + fh.read()
+
+VERSION = "0.3"
+DESCRIPTION = "Classes for technical analysis of stocks."
+
+# Setting up
 setup(
-    name="stock_analysis",
-    version="0.2",
-    description="Classes for technical analysis of stocks.",
+    name="stock-analysis",
+    version=VERSION,
     author="Stefanie Molin",
-    author_email="24376333+stefmolin@users.noreply.github.com",
-    license="MIT",
-    url="https://github.com/stefmolin/stock-analysis",
-    packages=["stock_analysis"],
+    author_email="d19cyber@gmail.com",
+    description=DESCRIPTION,
+    long_description_content_type="text/markdown",
+    long_description=long_description,
+    packages=find_packages(),
     install_requires=[
         "matplotlib>=3.0.2",
         "numpy>=1.15.2",
@@ -17,5 +29,18 @@ setup(
         "seaborn>=0.11.0",
         "statsmodels>=0.11.1",
         "mplfinance>=0.12.7a4",
+    ],
+    keywords=[
+        "python",
+        "stock",
+        "analysis",
+    ],
+    classifiers=[
+        "Development Status :: 0.3 - Production/Stable",
+        "Intended Audience :: Developers",
+        "Programming Language :: Python :: 3",
+        "Operating System :: Unix",
+        "Operating System :: MacOS :: MacOS X",
+        "Operating System :: Microsoft :: Windows",
     ],
 )
