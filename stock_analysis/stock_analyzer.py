@@ -8,7 +8,7 @@ from .utils import validate_df
 class StockAnalyzer:
     """Class for providing metrics for technical analysis of a stock."""
 
-    @validate_df(columns={'open', 'high', 'low', 'close'})
+    @validate_df(columns={"open", "high", "low", "close"})
     def __init__(self, df):
         """Create a `StockAnalyzer` object by passing in a `pandas.DataFrame` of OHLC data."""
         self.data = df
@@ -36,17 +36,17 @@ class StockAnalyzer:
     @property
     def last_close(self):
         """Get the value of the last close in the data."""
-        return self.data.last('1D').close.iat[0]
+        return self.data.last("1D").close.iat[0]
 
     @property
     def last_high(self):
         """Get the value of the last high in the data."""
-        return self.data.last('1D').high.iat[0]
+        return self.data.last("1D").high.iat[0]
 
     @property
     def last_low(self):
         """Get the value of the last low in the data."""
-        return self.data.last('1D').low.iat[0]
+        return self.data.last("1D").low.iat[0]
 
     def resistance(self, level=1):
         """
@@ -65,7 +65,7 @@ class StockAnalyzer:
         elif level == 3:
             res = self.last_high + 2 * (self.pivot_point - self.last_low)
         else:
-            raise ValueError('Not a valid level. Must be 1, 2, or 3')
+            raise ValueError("Not a valid level. Must be 1, 2, or 3")
         return res
 
     def support(self, level=1):
@@ -85,7 +85,7 @@ class StockAnalyzer:
         elif level == 3:
             sup = self.last_low - 2 * (self.last_high - self.pivot_point)
         else:
-            raise ValueError('Not a valid level. Must be 1, 2, or 3')
+            raise ValueError("Not a valid level. Must be 1, 2, or 3")
         return sup
 
     def daily_std(self, periods=252):
@@ -102,7 +102,7 @@ class StockAnalyzer:
         Returns:
             The standard deviation
         """
-        return self.pct_change[min(periods, self._max_periods) * -1:].std()
+        return self.pct_change[min(periods, self._max_periods) * -1 :].std()
 
     def annualized_volatility(self):
         """Calculate the annualized volatility."""
@@ -207,14 +207,14 @@ class StockAnalyzer:
         Determine if a stock is in a bear market, meaning its
         return in the last 2 months is a decline of 20% or more.
         """
-        return self.portfolio_return(self.data.last('2M')) <= -.2
+        return self.portfolio_return(self.data.last("2M")) <= -0.2
 
     def is_bull_market(self):
         """
         Determine if a stock is in a bull market, meaning its
         return in the last 2 months is an increase of 20% or more.
         """
-        return self.portfolio_return(self.data.last('2M')) >= .2
+        return self.portfolio_return(self.data.last("2M")) >= 0.2
 
     def sharpe_ratio(self, r_f):
         """
@@ -229,15 +229,15 @@ class StockAnalyzer:
             The Sharpe ratio, as a float.
         """
         return (
-            self.cumulative_returns().last('1D').iat[0] - r_f
+            self.cumulative_returns().last("1D").iat[0] - r_f
         ) / self.cumulative_returns().std()
 
 
 class AssetGroupAnalyzer:
     """Analyzes many assets in a dataframe."""
 
-    @validate_df(columns={'open', 'high', 'low', 'close'})
-    def __init__(self, df, group_by='name'):
+    @validate_df(columns={"open", "high", "low", "close"})
+    def __init__(self, df, group_by="name"):
         """
         Create an `AssetGroupAnalyzer` object by passing in a `pandas.DataFrame`
         and column to group by.
