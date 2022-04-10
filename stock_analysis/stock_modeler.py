@@ -1,4 +1,4 @@
-"""Simple time series modeling for stocks."""
+""" Simple time series modeling for stocks """
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -10,7 +10,7 @@ from .utils import validate_df
 
 
 class StockModeler:
-    """Static methods for modeling stocks."""
+    """ Static methods for modeling stocks """
 
     def __init__(self):
         raise NotImplementedError(
@@ -22,17 +22,17 @@ class StockModeler:
     def decompose(df, period, model="additive"):
         """
         Decompose the closing price of the stock into trend, seasonal,
-        and remainder components.
+        and remainder components
 
         Parameters:
             - df: The dataframe containing the stock closing price as `close`
-                  and with a time index.
-            - period: The number of periods in the frequency.
+                  and with a time index
+            - period: The number of periods in the frequency
             - model: How to compute the decomposition
                      ('additive', 'multiplicative')
 
         Returns:
-            A `statsmodels` decomposition object.
+            A `statsmodels` decomposition object
         """
         return seasonal_decompose(df.close, model=model, period=period)
 
@@ -40,20 +40,20 @@ class StockModeler:
     @validate_df(columns={"close"}, instance_method=False)
     def arima(df, *, ar, i, ma, fit=True, freq="B"):
         """
-        Create an ARIMA object for modeling time series.
+        Create an ARIMA object for modeling time series
 
         Parameters:
             - df: The dataframe containing the stock closing price as `close`
-                  and with a time index.
-            - ar: The autoregressive order (p).
-            - i: The differenced order (q).
-            - ma: The moving average order (d).
+                  and with a time index
+            - ar: The autoregressive order (p)
+            - i: The differenced order (q)
+            - ma: The moving average order (d)
             - fit: Whether or not to return the fitted model,
-                   defaults to `True`.
-            - freq: The frequency of the data. Default is 1 business day ('B').
+                   defaults to `True`
+            - freq: The frequency of the data. Default is 1 business day ('B')
 
         Returns:
-            A `statsmodels` ARIMA object which you can use to fit and predict.
+            A `statsmodels` ARIMA object which you can use to fit and predict
         """
         arima_model = ARIMA(
             df.close.asfreq(freq).fillna(method="ffill"), order=(ar, i, ma)
@@ -64,22 +64,22 @@ class StockModeler:
     @validate_df(columns={"close"}, instance_method=False)
     def arima_predictions(df, arima_model_fitted, start, end, plot=True, **kwargs):
         """
-        Get ARIMA predictions as a `pandas.Series` object or plot.
+        Get ARIMA predictions as a `pandas.Series` object or plot
 
         Parameters:
-            - df: The dataframe for the stock.
-            - arima_model_fitted: The fitted ARIMA model.
-            - start: The start date for the predictions.
-            - end: The end date for the predictions.
+            - df: The dataframe for the stock
+            - arima_model_fitted: The fitted ARIMA model
+            - start: The start date for the predictions
+            - end: The end date for the predictions
             - plot: Whether or not to plot the result, default is
                     `True` meaning the plot is returned instead of the
-                    `pandas.Series` object containing the predictions.
+                    `pandas.Series` object containing the predictions
             - kwargs: Additional keyword arguments to pass to the pandas
-                      `plot()` method.
+                      `plot()` method
 
         Returns:
             A matplotlib `Axes` object or predictions as a `pandas.Series`
-            object depending on the value of the `plot` argument.
+            object depending on the value of the `plot` argument
         """
         predictions = arima_model_fitted.predict(start=start, end=end)
 
@@ -94,10 +94,10 @@ class StockModeler:
     @validate_df(columns={"close"}, instance_method=False)
     def regression(df):
         """
-        Create linear regression of time series data with a lag of 1.
+        Create linear regression of time series data with a lag of 1
 
         Parameters:
-            - df: The dataframe with the stock data.
+            - df: The dataframe with the stock data
 
         Returns:
             X, Y, and the fitted `statsmodels` linear regression
@@ -110,22 +110,22 @@ class StockModeler:
     @validate_df(columns={"close"}, instance_method=False)
     def regression_predictions(df, model, start, end, plot=True, **kwargs):
         """
-        Get linear regression predictions as a `pandas.Series` object or plot.
+        Get linear regression predictions as a `pandas.Series` object or plot
 
         Parameters:
-            - df: The dataframe for the stock.
-            - model: The fitted linear regression model.
-            - start: The start date for the predictions.
-            - end: The end date for the predictions.
+            - df: The dataframe for the stock
+            - model: The fitted linear regression model
+            - start: The start date for the predictions
+            - end: The end date for the predictions
             - plot: Whether or not to plot the result, default is
                     `True` meaning the plot is returned instead of the
-                    `pandas.Series` object containing the predictions.
+                    `pandas.Series` object containing the predictions
             - kwargs: Additional keyword arguments to pass to the pandas
-                      `plot()` method.
+                      `plot()` method
 
         Returns:
             A matplotlib `Axes` object or predictions as a `pandas.Series`
-            object depending on the value of the `plot` argument.
+            object depending on the value of the `plot` argument
         """
         predictions = pd.Series(index=pd.date_range(start, end), name="close")
         last = df.last("1D").close
@@ -146,15 +146,15 @@ class StockModeler:
     @staticmethod
     def plot_residuals(model_fitted, freq="B"):
         """
-        Visualize the residuals from the model.
+        Visualize the residuals from the model
 
         Parameters:
             - model_fitted: The fitted model
             - freq: Frequency that the predictions were made on.
-                    Default is 'B' (business day).
+                    Default is 'B' (business day)
 
         Returns:
-            A matplotlib `Axes` object.
+            A matplotlib `Axes` object
         """
         _, axes = plt.subplots(1, 2, figsize=(15, 5))
         residuals = pd.Series(model_fitted.resid.asfreq(freq), name="residuals")
