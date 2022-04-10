@@ -61,7 +61,7 @@ class Visualizer:
         return ax
 
     @staticmethod
-    def shade_region(ax, x=tuple(), y=tuple(), **kwargs):
+    def shade_region(ax, x=(), y=(), **kwargs):
         """
         Static method for shading a region on a plot.
 
