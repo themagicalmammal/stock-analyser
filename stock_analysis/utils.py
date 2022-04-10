@@ -66,7 +66,6 @@ def validate_df(columns, instance_method=True):
     """
 
     def method_wrapper(method):
-
         @wraps(method)
         def validate_wrapper(self, *args, **kwargs):
             # functions and static methods don't pass self
@@ -76,7 +75,8 @@ def validate_df(columns, instance_method=True):
                 raise ValueError("Must pass in a pandas `DataFrame`")
             if columns.difference(df.columns):
                 raise ValueError(
-                    f"DataFrame must contain the following columns: {columns}")
+                    f"DataFrame must contain the following columns: {columns}"
+                )
             return method(self, *args, **kwargs)
 
         return validate_wrapper
