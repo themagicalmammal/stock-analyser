@@ -2,4 +2,4 @@ name: Autofix
 on: push
 jobs:
   autofix:
-    uses: kdeldycke/workflows/.github/workflows/autofix.yaml@v2.0.2
+    uses: kdeldycke/workflows/.github/workflows/autofix.yaml@v2.0.4
