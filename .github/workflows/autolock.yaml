@@ -2,4 +2,4 @@ name: Autolock
 on: push
 jobs:
   autolock:
-    uses: kdeldycke/workflows/.github/workflows/autolock.yaml@v2.0.2
+    uses: kdeldycke/workflows/.github/workflows/autolock.yaml@v2.0.4
