@@ -6,7 +6,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: fastify/github-action-merge-dependabot@v3.4.1
+      - uses: fastify/github-action-merge-dependabot@v3.5.3
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
