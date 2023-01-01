@@ -2,12 +2,6 @@
 
 Package for making elements of technical analysis of a stock easier. This package is meant to be a starting point for you to develop your own. As such, all the instructions for installing/setup will be assuming you will continue to develop on your end.
 
-## Setup
-
-```shell
-$ pip3 install stock-analyser 
-```
-
 ## Usage
 
 This section will show some of the functionality of each class; however, it is by no means exhaustive.
@@ -83,7 +77,7 @@ ax.set_ylabel("price ($)")
 plt.show()
 ```
 
-<img src="images/netflix_line_plot.png?raw=true" align="center" width="600" alt="line plot with reference line">
+<img src="https://raw.githubusercontent.com/themagicalmammal/stock-analyser/main/images/netflix_line_plot.png" align="center" width="600" alt="line plot with reference line">
 
 After hours trades:
 
@@ -92,7 +86,7 @@ netflix_viz.after_hours_trades()
 plt.show()
 ```
 
-<img src="images/netflix_after_hours_trades.png?raw=true" align="center" width="800" alt="after hours trades plot">
+<img src="https://raw.githubusercontent.com/themagicalmammal/stock-analyser/main/images/netflix_after_hours_trades.png" align="center" width="800" alt="after hours trades plot">
 
 Differential in closing price versus another asset:
 
@@ -101,7 +95,7 @@ netflix_viz.fill_between_other(fb)
 plt.show()
 ```
 
-<img src="images/nflx_vs_fb_closing_price.png?raw=true" align="center" width="600" alt="differential between NFLX and FB">
+<img src="https://raw.githubusercontent.com/themagicalmammal/stock-analyser/main/images/nflx_vs_fb_closing_price.png" align="center" width="600" alt="differential between NFLX and FB">
 
 Candlestick plots with resampling (uses `mplfinance`):
 
@@ -111,7 +105,7 @@ netflix_viz.candlestick(
 )
 ```
 
-<img src="images/candlestick.png?raw=true" align="center" width="600" alt="resampled candlestick plot">
+<img src="https://raw.githubusercontent.com/themagicalmammal/stock-analyser/main/images/candlestick.png" align="center" width="600" alt="resampled candlestick plot">
 
 *Note: run `help()` on `StockVisualizer` for more visualizations*
 
@@ -126,7 +120,7 @@ faang_viz = AssetGroupVisualizer(faang)
 faang_viz.heatmap(True)
 ```
 
-<img src="images/faang_heatmap.png?raw=true" align="center" width="450" alt="correlation heatmap">
+<img src="https://raw.githubusercontent.com/themagicalmammal/stock-analyser/main/images/faang_heatmap.png" align="center" width="450" alt="correlation heatmap">
 
 *Note: run `help()` on `AssetGroupVisualizer` for more visualizations. This object has many of the visualizations of the `StockVisualizer` class.*
 
@@ -170,7 +164,7 @@ fig = decomposition.plot()
 plt.show()
 ```
 
-<img src="images/nflx_ts_decomposition.png?raw=true" align="center" width="450" alt="time series decomposition">
+<img src="https://raw.githubusercontent.com/themagicalmammal/stock-analyser/main/images/nflx_ts_decomposition.png" align="center" width="450" alt="time series decomposition">
 
 #### ARIMA
 
@@ -187,7 +181,7 @@ StockModeler.plot_residuals(arima_model)
 plt.show()
 ```
 
-<img src="images/arima_residuals.png?raw=true" align="center" width="650" alt="ARIMA residuals">
+<img src="https://raw.githubusercontent.com/themagicalmammal/stock-analyser/main/images/arima_residuals.png" align="center" width="650" alt="ARIMA residuals">
 
 Plot the predictions:
 
@@ -198,7 +192,7 @@ arima_ax = StockModeler.arima_predictions(
 plt.show()
 ```
 
-<img src="images/arima_predictions.png?raw=true" align="center" width="450" alt="ARIMA predictions">
+<img src="https://raw.githubusercontent.com/themagicalmammal/stock-analyser/main/images/arima_predictions.png" align="center" width="450" alt="ARIMA predictions">
 
 #### Linear regression
 
@@ -215,7 +209,7 @@ StockModeler.plot_residuals(lm)
 plt.show()
 ```
 
-<img src="images/lm_residuals.png?raw=true" align="center" width="650" alt="linear regression residuals">
+<img src="https://raw.githubusercontent.com/themagicalmammal/stock-analyser/main/images/lm_residuals.png" align="center" width="650" alt="linear regression residuals">
 
 Plot the predictions:
 
@@ -226,4 +220,4 @@ linear_reg = StockModeler.regression_predictions(
 plt.show()
 ```
 
-<img src="images/lm_predictions.png?raw=true" align="center" width="450" alt="linear regression predictions">
+<img src="https://raw.githubusercontent.com/themagicalmammal/stock-analyser/main/images/lm_predictions.png" align="center" width="450" alt="linear regression predictions">
