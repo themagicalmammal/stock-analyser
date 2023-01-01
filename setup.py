@@ -6,7 +6,7 @@ from setuptools import find_packages, setup
 here = os.path.abspath(os.path.dirname(__file__))
 
 with codecs.open(os.path.join(here, "README.md"), encoding="utf-8") as fh:
-    long_description = "\n" + fh.read()
+    LONG_DESCRIPTION = "\n" + fh.read()
 
 with open("requirements.txt") as f:
     required = f.read().splitlines()
@@ -21,6 +21,8 @@ setup(
     author="Stefanie Molin",
     author_email="d19cyber@gmail.com",
     description=DESCRIPTION,
+    long_description_content_type="text/markdown",
+    long_description=LONG_DESCRIPTION,
     packages=find_packages(),
     install_requires=required,
     keywords=[
