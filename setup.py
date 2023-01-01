@@ -11,7 +11,7 @@ with codecs.open(os.path.join(here, "README.md"), encoding="utf-8") as fh:
 with open("requirements.txt") as f:
     required = f.read().splitlines()
 
-VERSION = "0.3.5"
+VERSION = "0.3.6"
 DESCRIPTION = "Classes for technical analysis of stocks."
 
 # Setting up
