@@ -27,7 +27,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     license="MIT",
-    install_requires=required,    
+    install_requires=required,
     project_urls={
         # "Website": "https://github.com/themagicalmammal/stock-analyser",
         # "Source code": "https://github.com/themagicalmammal/stock-analyser",
